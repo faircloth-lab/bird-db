@@ -269,5 +269,30 @@ def species_common(common_name):
 
     return jsonify(attribution=citation_info(), records=json_results)
 
+
+@app.route('/api/v1/species/scientific/<string:scientific_name>', methods=['GET'])
+def species_scientific(scientific_name):
+  if request.method == 'GET':
+    results = Species.query.filter(Species.binomial.like("{}%".format(scientific_name))).all()
+    json_results = []
+    for result in results:
+        d = {
+            'order': result.ord,
+            'family': result.family,
+            'genus': result.genus,
+            'species': result.species,
+            'authority': result.authority,
+            'common': result.common,
+            'breed_region': result.breed_region,
+            'breed_subregion': result.breed_subregion,
+            'nonbreed': result.nonbreed,
+            'code': result.code,
+            'comment': result.comment,
+            'binomial': result.binomial
+        }
+        json_results.append(d)
+
+    return jsonify(attribution=citation_info(), records=json_results)
+
 if __name__ == '__main__':
     app.run(debug=True)
