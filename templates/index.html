@@ -48,8 +48,8 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/">home</a></li>
             <!--
+            <li class="active"><a href="/">home</a></li>
             <li><a href="/order/">order</a></li>
             <li><a href="/family/">family</a></li>
             <li><a href="/genus/">genus</a></li>
@@ -71,14 +71,25 @@
 
     <div class="container">
 
-    <h2>Avian taxonomy api</h2>
+    <h1 id="top" class="page-header">Avian taxonomy API</h1>
     <p>The avian taxonomy <a href="http://en.wikipedia.org/wiki/Application_programming_interface">API</a> is designed using <a href="http://en.wikipedia.org/wiki/REST">REST</a> principles.  The <a href="http://en.wikipedia.org/wiki/Application_programming_interface">API</a> allows you to query a database of standardized avian nomeclature using commmon-language URLs, a web client, and HTTP verbs.  Using these same approaches, you can programmatically access information.  If the query is successful, the API returns <a href="http://en.wikipedia.org/wiki/JSON">JSON</a> for all responses, including errors.</p>
 
-    <h3>Browser-based example</h3>
+    <h1 id="top" class="page-header">Data source and API history</h1>
+    <p>The data driving the Avian taxonomy API are derived from v4.1 of the <a href="http://www.worldbirdnames.org/">IOC World Bird (Master) List</a>, which is database of avian taxonomy available under <a href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution license</a>.  <strong>If you use the Avian taxonomy API</strong> please cite the <a href="http://www.worldbirdnames.org/">IOC World Bird List</a> correctly:</p>
+
+    <blockquote>
+    <h4>Gill, F & D Donsker (Eds). 2014. IOC World Bird List (v 4.1). doi: <a href="http://doi.org/10.14344/IOC.ML.4.1">10.14344/IOC.ML.4.1</a>.</h4>
+    <footer><a href="http://www.worldbirdnames.org/">http://www.worldbirdnames.org/</a></footer>
+    </blockquote>
+
+    <p>Because I often want a queryable source of avian scientific and common names, I created the API by converting the available <a href="http://www.worldbirdnames.org/ioc-lists/master-list/">excel</a> file to an <a href="http://www.sqlite.org/">SQLite</a> database using <a href="http://www.python.org">python</a>.  The code that I used to run the conversion, and the entire codebase of this website are available from <a href="https://github.com/faircloth-lab/bird-db">https://github.com/faircloth-lab/bird-db</a>.</p>
+
+    <h1 id="quickstart" class="page-header">Quickstart</h1>
+    <h3>Using a browser</h3>
     <p>
     To query the database for all records where the common name is "Quail-plover", you can visit this URL using your browser:
     <br/><br/>
-    <a href="http://birds.faircloth-lab.org/api/v1/species/common/Quail-plover">http://birds.faircloth-lab.org/api/v1/species/common/Quail-plover</a>
+    <a href="/api/v1/species/common/Quail-plover">http://birds.faircloth-lab.org/api/v1/species/common/Quail-plover</a>
     <br/><br/>
     and you should receive a response that includes the information in the database for like
     <pre><code>{
@@ -109,7 +120,7 @@
     ]
 }</code></pre></p>
 
-    <h3>CURL-based example</h3>
+    <h3>Using cURL</h3>
     <p>Alternatively, you can access this information using something like <a href="http://en.wikipedia.org/wiki/CURL">cURL</a>.  For instance, you can run:
     <pre><code>curl http://birds.faircloth-lab.org/api/v1/species/scientific/Colinus%20virginianus</code></pre> and the respons you receive should look like:
     <pre><code>{
@@ -140,7 +151,7 @@
     ]
 }</code></pre></p>
 
-    <h2>python-based example</h2>
+    <h2>Using python</h2>
     <p>You can use the <a href="http://docs.python-requests.org/en/latest/">requests</a> module in <a href="http://python.org/">python</a> to write computer code to access the database using something like:
     <pre><code>
     In [1]: import requests
