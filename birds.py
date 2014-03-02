@@ -105,11 +105,32 @@ def summarize(records, limit, offset):
         'offset': offset
     }
 
+## STATIC ROUTES
 
 @app.route('/')
 def front_page():
     return render_template('index.html')
 
+'''
+@app.route('/order/')
+def order_page():
+    return render_template('order.html')
+
+
+@app.route('/family/')
+def family_page():
+    return render_template('family.html')
+
+
+@app.route('/genus/')
+def genus_page():
+    return render_template('genus.html')
+
+
+@app.route('/species/')
+def species_page():
+    return render_template('species.html')
+'''
 
 @app.errorhandler(404)
 def page_not_found(error=None):
