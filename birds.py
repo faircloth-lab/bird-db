@@ -39,6 +39,23 @@ class Families(db.Model):
         return "<Families('{} {}')>".format(self.scientific, self.english)
 
 
+class Genera(db.Model):
+    __tablename__ = 'genera'
+    genus = db.Column(db.String, primary_key=True)
+    authority = db.Column(db.String)
+    code = db.Column(db.String)
+    comment = db.Column(db.String)
+
+    def __init__(self, genus, authority, code, comment):
+        self.genus = genus
+        self.authority = authority
+        self.code = code
+        self.comment = comment
+
+    def __repr__(self):
+        return "<Genera('{}')>".format(self.genus)
+
+
 @app.route('/order/', methods=['GET'])
 def orders():
   if request.method == 'GET':
@@ -115,6 +132,40 @@ def family_common(common_name):
         d = {
             'scientific': result.scientific,
             'common': result.english,
+            'code': result.code,
+            'comment': result.comment
+        }
+        json_results.append(d)
+
+    return jsonify(items=json_results)
+
+
+@app.route('/genus/', methods=['GET'])
+def genera():
+  if request.method == 'GET':
+    results = Genera.query.limit(100).offset(0).all()
+    json_results = []
+    for result in results:
+        d = {
+            'genus': result.genus,
+            'authority': result.authority,
+            'code': result.code,
+            'comment': result.comment
+        }
+        json_results.append(d)
+
+    return jsonify(items=json_results)
+
+
+@app.route('/genus/<string:common_name>', methods=['GET'])
+def genus_common(common_name):
+  if request.method == 'GET':
+    results = Genera.query.filter(Genera.genus.like("{}%".format(common_name))).all()
+    json_results = []
+    for result in results:
+        d = {
+            'genus': result.genus,
+            'authority': result.authority,
             'code': result.code,
             'comment': result.comment
         }
