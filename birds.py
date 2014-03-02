@@ -98,6 +98,10 @@ def citation_info():
         'citation': 'Gill, F & D Donsker (Eds). 2014. IOC World Bird List (v 4.1). doi: 10.14344/IOC.ML.4.1'
     }
 
+@app.route('/')
+def front_page():
+    return 'This is bird-db.faircloth-lab.org'
+
 @app.route('/order/', methods=['GET'])
 def orders():
   if request.method == 'GET':
