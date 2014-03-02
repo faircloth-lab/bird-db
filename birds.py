@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -98,15 +98,17 @@ def citation_info():
         'citation': 'Gill, F & D Donsker (Eds). 2014. IOC World Bird List (v 4.1). doi: 10.14344/IOC.ML.4.1'
     }
 
-def summarize(records):
+def summarize(records, limit, offset):
     return {
         'count': len(records),
+        'limit': limit,
+        'offset': offset
     }
 
 
 @app.route('/')
 def front_page():
-    return 'This is birds.faircloth-lab.org'
+    return render_template('index.html')
 
 
 @app.route('/api/v1/order/', methods=['GET'])
@@ -230,32 +232,9 @@ def genus_common(name):
 @app.route('/api/v1/species/', methods=['GET'])
 def species():
   if request.method == 'GET':
-    results = Species.query.limit(100).offset(0).all()
-    json_results = []
-    for result in results:
-        d = {
-            'order': result.ord,
-            'family': result.family,
-            'genus': result.genus,
-            'species': result.species,
-            'authority': result.authority,
-            'common': result.common,
-            'breed_region': result.breed_region,
-            'breed_subregion': result.breed_subregion,
-            'nonbreed': result.nonbreed,
-            'code': result.code,
-            'comment': result.comment,
-            'binomial': result.binomial
-        }
-        json_results.append(d)
-
-    return jsonify(attribution=citation_info(), records=json_results)
-
-
-@app.route('/api/v1/species/common/<string:common_name>', methods=['GET'])
-def species_common(common_name):
-  if request.method == 'GET':
-    results = Species.query.filter(Species.common.like("{}%".format(common_name))).all()
+    limit = request.args.get('limit', 100)
+    offset = request.args.get('offset', 0)
+    results = Species.query.limit(limit).offset(offset).all()
     json_results = []
     for result in results:
         d = {
@@ -276,7 +255,38 @@ def species_common(common_name):
 
     return jsonify(
         attribution=citation_info(),
-        meta=summarize(json_results),
+        meta=summarize(json_results, limit, offset),
+        records=json_results
+    )
+
+
+@app.route('/api/v1/species/common/<string:common_name>', methods=['GET'])
+def species_common(common_name):
+  if request.method == 'GET':
+    limit = request.args.get('limit', 100)
+    offset = request.args.get('offset', 0)
+    results = Species.query.filter(Species.common.like("{}%".format(common_name))).limit(limit).offset(offset).all()
+    json_results = []
+    for result in results:
+        d = {
+            'order': result.ord,
+            'family': result.family,
+            'genus': result.genus,
+            'species': result.species,
+            'authority': result.authority,
+            'common': result.common,
+            'breed_region': result.breed_region,
+            'breed_subregion': result.breed_subregion,
+            'nonbreed': result.nonbreed,
+            'code': result.code,
+            'comment': result.comment,
+            'binomial': result.binomial
+        }
+        json_results.append(d)
+
+    return jsonify(
+        attribution=citation_info(),
+        meta=summarize(json_results, limit, offset),
         records=json_results
     )
 
@@ -284,7 +294,9 @@ def species_common(common_name):
 @app.route('/api/v1/species/scientific/<string:scientific_name>', methods=['GET'])
 def species_scientific(scientific_name):
   if request.method == 'GET':
-    results = Species.query.filter(Species.binomial.like("{}%".format(scientific_name))).all()
+    limit = request.args.get('limit', 100)
+    offset = request.args.get('offset', 0)
+    results = Species.query.filter(Species.binomial.like("{}%".format(scientific_name))).limit(limit).offset(offset).all()
     json_results = []
     for result in results:
         d = {
@@ -305,7 +317,7 @@ def species_scientific(scientific_name):
 
     return jsonify(
         attribution=citation_info(),
-        meta=summarize(json_results),
+        meta=summarize(json_results, limit, offset),
         records=json_results
     )
 
