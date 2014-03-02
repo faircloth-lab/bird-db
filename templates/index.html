@@ -91,7 +91,7 @@
     <br/><br/>
     <a href="/api/v1/species/common/Quail-plover">http://birds.faircloth-lab.org/api/v1/species/common/Quail-plover</a>
     <br/><br/>
-    and you should receive a response that includes the information in the database for like
+    and you should receive a response that includes the information in the database for where any common name is "Quail-plover":
     <pre><code>{
     "attribution": {
         "citation": "Gill, F & D Donsker (Eds). 2014. IOC World Bird List (v 4.1). doi: 10.14344/IOC.ML.4.1",
@@ -122,7 +122,7 @@
 
     <h3>Using cURL</h3>
     <p>Alternatively, you can access this information using something like <a href="http://en.wikipedia.org/wiki/CURL">cURL</a>.  For instance, you can run:
-    <pre><code>curl http://birds.faircloth-lab.org/api/v1/species/scientific/Colinus%20virginianus</code></pre> and the respons you receive should look like:
+    <pre><code>curl http://birds.faircloth-lab.org/api/v1/species/scientific/Colinus%20virginianus</code></pre> and the response you receive should look like:
     <pre><code>{
     "attribution": {
       "citation": "Gill, F & D Donsker (Eds). 2014. IOC World Bird List (v 4.1). doi: 10.14344/IOC.ML.4.1",
@@ -152,7 +152,7 @@
 }</code></pre></p>
 
     <h2>Using python</h2>
-    <p>You can use the <a href="http://docs.python-requests.org/en/latest/">requests</a> module in <a href="http://python.org/">python</a> to write computer code to access the database using something like:
+    <p>Finally, you can use the <a href="http://docs.python-requests.org/en/latest/">requests</a> module in <a href="http://python.org/">python</a> to write computer code to access the database.  This can be handy when you need to look up a list of species given a list of common names.  To do this, you can use something like:
     <pre><code>
     In [1]: import requests
 
