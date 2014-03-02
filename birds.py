@@ -112,8 +112,15 @@ def front_page():
 
 
 @app.errorhandler(404)
-def page_not_found(e):
-    return jsonify(error=404, text=e), 404
+def page_not_found(error=None):
+    message = {
+            'status': 404,
+            'message': 'Not Found: ' + request.url,
+    }
+    json_result = jsonify(message)
+    json_result.status_code = 404
+
+    return json_result
 
 
 @app.route('/api/v1/order/', methods=['GET'])
