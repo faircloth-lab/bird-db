@@ -98,9 +98,16 @@ def citation_info():
         'citation': 'Gill, F & D Donsker (Eds). 2014. IOC World Bird List (v 4.1). doi: 10.14344/IOC.ML.4.1'
     }
 
+def summarize(records):
+    return {
+        'count': len(records),
+    }
+
+
 @app.route('/')
 def front_page():
     return 'This is birds.faircloth-lab.org'
+
 
 @app.route('/api/v1/order/', methods=['GET'])
 def orders():
@@ -267,7 +274,11 @@ def species_common(common_name):
         }
         json_results.append(d)
 
-    return jsonify(attribution=citation_info(), records=json_results)
+    return jsonify(
+        attribution=citation_info(),
+        meta=summarize(json_results),
+        records=json_results
+    )
 
 
 @app.route('/api/v1/species/scientific/<string:scientific_name>', methods=['GET'])
@@ -292,7 +303,11 @@ def species_scientific(scientific_name):
         }
         json_results.append(d)
 
-    return jsonify(attribution=citation_info(), records=json_results)
+    return jsonify(
+        attribution=citation_info(),
+        meta=summarize(json_results),
+        records=json_results
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)
