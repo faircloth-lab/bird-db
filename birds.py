@@ -109,16 +109,18 @@ def family_scientific(scientific_name):
 @app.route('/family/common/<string:common_name>', methods=['GET'])
 def family_common(common_name):
   if request.method == 'GET':
-    result = Families.query.filter_by(english=common_name).first()
-
-    json_result = {
+    results = Families.query.filter(Families.common.like("{}%".format(common_name))).all()
+    json_results = []
+    for result in results:
+        d = {
             'scientific': result.scientific,
             'common': result.english,
             'code': result.code,
             'comment': result.comment
         }
+        json_results.append(d)
 
-    return jsonify(items=json_result)
+    return jsonify(items=json_results)
 
 
 if __name__ == '__main__':
