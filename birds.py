@@ -100,9 +100,9 @@ def citation_info():
 
 @app.route('/')
 def front_page():
-    return 'This is bird-db.faircloth-lab.org'
+    return 'This is birds.faircloth-lab.org'
 
-@app.route('/order/', methods=['GET'])
+@app.route('/api/v1/order/', methods=['GET'])
 def orders():
   if request.method == 'GET':
     results = Orders.query.limit(100).offset(0).all()
@@ -118,7 +118,7 @@ def orders():
     return jsonify(attribution=citation_info(), records=json_results)
 
 
-@app.route('/order/<string:order_name>', methods=['GET'])
+@app.route('/api/v1/order/<string:order_name>', methods=['GET'])
 def order(order_name):
   if request.method == 'GET':
     results = Orders.query.filter(Orders.ord.like("{}%".format(order_name))).all()
@@ -135,7 +135,7 @@ def order(order_name):
     return jsonify(attribution=citation_info(), records=json_results)
 
 
-@app.route('/family/', methods=['GET'])
+@app.route('/api/v1/family/', methods=['GET'])
 def families():
   if request.method == 'GET':
     results = Families.query.limit(100).offset(0).all()
@@ -152,7 +152,7 @@ def families():
     return jsonify(attribution=citation_info(), records=json_results)
 
 
-@app.route('/family/scientific/<string:scientific_name>', methods=['GET'])
+@app.route('/api/v1/family/scientific/<string:scientific_name>', methods=['GET'])
 def family_scientific(scientific_name):
   if request.method == 'GET':
     results = Families.query.filter(Families.scientific.like("{}%".format(scientific_name))).all()
@@ -169,7 +169,7 @@ def family_scientific(scientific_name):
     return jsonify(attribution=citation_info(), records=json_results)
 
 
-@app.route('/family/common/<string:common_name>', methods=['GET'])
+@app.route('/api/v1/family/common/<string:common_name>', methods=['GET'])
 def family_common(common_name):
   if request.method == 'GET':
     results = Families.query.filter(Families.english.like("{}%".format(common_name))).all()
@@ -186,7 +186,7 @@ def family_common(common_name):
     return jsonify(attribution=citation_info(), records=json_results)
 
 
-@app.route('/genus/', methods=['GET'])
+@app.route('/api/v1/genus/', methods=['GET'])
 def genera():
   if request.method == 'GET':
     results = Genera.query.limit(100).offset(0).all()
@@ -203,7 +203,7 @@ def genera():
     return jsonify(attribution=citation_info(), records=json_results)
 
 
-@app.route('/genus/<string:name>', methods=['GET'])
+@app.route('/api/v1/genus/<string:name>', methods=['GET'])
 def genus_common(name):
   if request.method == 'GET':
     results = Genera.query.filter(Genera.genus.like("{}%".format(name))).all()
@@ -220,7 +220,7 @@ def genus_common(name):
     return jsonify(attribution=citation_info(), records=json_results)
 
 
-@app.route('/species/', methods=['GET'])
+@app.route('/api/v1/species/', methods=['GET'])
 def species():
   if request.method == 'GET':
     results = Species.query.limit(100).offset(0).all()
@@ -245,7 +245,7 @@ def species():
     return jsonify(attribution=citation_info(), records=json_results)
 
 
-@app.route('/species/common/<string:common_name>', methods=['GET'])
+@app.route('/api/v1/species/common/<string:common_name>', methods=['GET'])
 def species_common(common_name):
   if request.method == 'GET':
     results = Species.query.filter(Species.common.like("{}%".format(common_name))).all()
@@ -268,9 +268,6 @@ def species_common(common_name):
         json_results.append(d)
 
     return jsonify(attribution=citation_info(), records=json_results)
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
